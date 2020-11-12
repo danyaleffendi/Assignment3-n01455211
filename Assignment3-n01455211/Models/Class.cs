@@ -7,13 +7,15 @@ namespace Assignment3_n01455211.Models
 {
     public class Class
     {
-        //Columns from the Teacher table of our database
+        //Columns from the class table of our database
         public int ClassId;        
         public string Classname;
         public string Classcode;
         public string Startdate;
-        public string Finishdate;
-        public string Teachername;
+        public string Finishdate;        
         public int Teacherid;
+
+        //Created to show teachername under the course show view
+        public string Teachername;
     }
 }

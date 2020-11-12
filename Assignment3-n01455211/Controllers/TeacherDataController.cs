@@ -13,6 +13,7 @@ namespace Assignment3_n01455211.Controllers
     {
         // This project is done with the help of instructor Christine Bittle's Blog Project.
         // Resources used are Github blog project example and lecture videos. Accessed on 11 and 12 Nov. 2020.
+        // Some help also taken from fellow students especially proper syntax for GetDateTime
 
         // The database context class which allows us to access School Database.
         private SchoolDbContext School = new SchoolDbContext();

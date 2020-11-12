@@ -11,15 +11,15 @@ namespace Assignment3_n01455211.Controllers
 {
     public class ClassDataController : ApiController
     {
-        // This project is done with the help of instructor Christine Bittle's Blog Project.
-        // Resources used are Github blog project example and lecture videos. Accessed on 11 and 12 Nov. 2020.
+        // The Classes MVP was build to get more understanding of developing dynamic pages through the use of sql database.
+
 
         // The database context class which allows us to access School Database.
         private SchoolDbContext School = new SchoolDbContext();
 
-        //This Controller Will access the teachers table of our school database.
+        //This Controller Will access the classes table of our school database.
         /// <summary>
-        /// Returns Teacher Information
+        /// Returns Classes Information
         /// </summary>
         /// <example>GET api/ClassData/ClassInfo</example>
         /// <returns>
@@ -37,20 +37,20 @@ namespace Assignment3_n01455211.Controllers
             //Establish a new command for our database
             MySqlCommand cmd = Conn.CreateCommand();
 
-            //SQL QUERY to access columns from teacher table
+            //SQL QUERY to access columns from classes table
             cmd.CommandText = "Select * from classes";
 
 
             //Incorporating SQL Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
-            //Create an empty list of Teacher Names
+            //Create an empty list of Class names
             List<Class> Class = new List<Class> { };
 
             //Loop Through Each Row the Result Set
             while (ResultSet.Read())
             {
-                //Get column information by the column name from teacher table
+                //Get column information by the column name from classes table
                 int Classid = (int)ResultSet["classid"];
                 string Classname = ResultSet["classname"].ToString();
                 string Classcode = ResultSet["classcode"].ToString();
@@ -66,7 +66,7 @@ namespace Assignment3_n01455211.Controllers
                 NewClass.Finishdate = FinishDate;
                 NewClass.Teacherid = Teacherid;
 
-                //Adding Teacher Name to the List
+                //Adding class name to the List
                 Class.Add(NewClass);
             }
 
@@ -74,7 +74,7 @@ namespace Assignment3_n01455211.Controllers
             //Ending connection between the MySQL Database and the WebServer
             Conn.Close();
 
-            //Returning the final list of teacher names
+            //Returning the final list of class names
             return Class;
         }
         [HttpGet]
@@ -91,7 +91,7 @@ namespace Assignment3_n01455211.Controllers
             //Establish a new command for our database
             MySqlCommand cmd = Conn.CreateCommand();
 
-            //SQL QUERY to access columns from teacher table
+            //SQL QUERY to access columns from class table
             cmd.CommandText = "Select classes.*, teachers.teacherfname, teachers.teacherlname from classes LEFT JOIN teachers ON classes.teacherid=teachers.teacherid WHERE classes.classid = " + id;
 
             //Incorporating SQL Query into a variable
@@ -99,7 +99,7 @@ namespace Assignment3_n01455211.Controllers
 
             while (ResultSet.Read())
             {
-                //Get column information by the column name from teacher table
+                //Get column information by the column name from class table
                 int Classid = (int)ResultSet["classid"];
                 int Teacherid = Convert.ToInt32(ResultSet["teacherid"]);
                 string Classname = ResultSet["classname"].ToString();

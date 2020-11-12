@@ -14,8 +14,13 @@ namespace Assignment3_n01455211.Models
         public string EmployeeNumber;
         public string HireDate;
         public string Salary;
+
+        //Created to show course name under the teacher show view
         public string Classname;
         public string Classcode;
+
+        //Created to link course name to respective class show view
         public int Classid;
+
     }
 }
