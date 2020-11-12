@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>School Teachers</h2>
+<p>This is the list of all current teachers</p>
+
+<div id="containerlist">
+    <h2>List of Teachers</h2>
+    @foreach (var Teacher in Model)
+    {
+        <div class="listitem row">
+            <div class="col-md-12"><a href="/teacher/Show/@Teacher.TeacherId">@Teacher.TeacherFname @Teacher.TeacherLname</a></div>
+        </div>
+    }
+</div>
