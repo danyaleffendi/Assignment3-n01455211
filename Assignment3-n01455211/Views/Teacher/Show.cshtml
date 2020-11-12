@@ -6,9 +6,10 @@
  
 <div id="containershow">
     <h2>@Model.TeacherFname @Model.TeacherLname</h2>
-    <p><span class="title">Empoyee Number:</span> @Model.EmployeeNumber</p>
-    <p><span class="title">Salary:</span> @Model.Salary</p>
-    <p><span class="title">Hiring Date:</span> @Model.HireDate</p>   
+    <div><span class="title">Empoyee Number:</span> @Model.EmployeeNumber</div>
+    <div><span class="title">Salary:</span> @Model.Salary</div>
+    <div><span class="title">Hiring Date:</span> @Model.HireDate</div>
+    <div><span class="title">Course Taught:</span> <a href="/Class/Show/@Model.Classid">@Model.Classname</a></div>
 </div>
 <div id="backbutton">
     <a class="back" href="/Teacher/List">Back</a>

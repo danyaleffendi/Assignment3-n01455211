@@ -27,10 +27,10 @@ namespace Assignment3_n01455211.Controllers
         public ActionResult Show(int id)
         {
             TeacherDataController controller = new TeacherDataController();
-            Teacher NewTeacher = controller.FindTeacher(id);
+            Teacher SelectedTeacher = controller.FindTeacher(id);
 
 
-            return View(NewTeacher);
+            return View(SelectedTeacher);
         }
 
     }

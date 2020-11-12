@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 
 namespace Assignment3_n01455211.Controllers
 {
-    public class TeacherDataController : ApiController
+    public class ClassDataController : ApiController
     {
         // This project is done with the help of instructor Christine Bittle's Blog Project.
         // Resources used are Github blog project example and lecture videos. Accessed on 11 and 12 Nov. 2020.
@@ -21,12 +21,12 @@ namespace Assignment3_n01455211.Controllers
         /// <summary>
         /// Returns Teacher Information
         /// </summary>
-        /// <example>GET api/TeacherData/TeacherInfo</example>
+        /// <example>GET api/ClassData/ClassInfo</example>
         /// <returns>
-        /// A list of teachers (first names and last names)
+        /// A list of Class
         /// </returns>
         [HttpGet]
-        public IEnumerable<Teacher> TeacherInfo()
+        public IEnumerable<Class> ClassInfo()
         {
             //Creating connection with database
             MySqlConnection Conn = School.AccessDatabase();
@@ -38,49 +38,49 @@ namespace Assignment3_n01455211.Controllers
             MySqlCommand cmd = Conn.CreateCommand();
 
             //SQL QUERY to access columns from teacher table
-            cmd.CommandText = "Select * from teachers";
-            
+            cmd.CommandText = "Select * from classes";
+
 
             //Incorporating SQL Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
 
             //Create an empty list of Teacher Names
-            List<Teacher> Teachers = new List<Teacher> { };
+            List<Class> Class = new List<Class> { };
 
             //Loop Through Each Row the Result Set
             while (ResultSet.Read())
             {
                 //Get column information by the column name from teacher table
-                int TeacherId = (int)ResultSet["teacherid"];                
-                string TeacherFname = ResultSet["teacherfname"].ToString();
-                string TeacherLname = ResultSet["teacherlname"].ToString();
-                string EmployeeNumber = ResultSet["employeenumber"].ToString();
-                string HireDate = ResultSet.GetDateTime("hiredate").ToString("yyyy-MM-dd");
-                string Salary = ResultSet["salary"].ToString();                
+                int Classid = (int)ResultSet["classid"];
+                string Classname = ResultSet["classname"].ToString();
+                string Classcode = ResultSet["classcode"].ToString();
+                string StartDate = ResultSet.GetDateTime("startdate").ToString("yyyy-MM-dd");
+                string FinishDate = ResultSet.GetDateTime("finishdate").ToString("yyyy-MM-dd");
+                int Teacherid = Convert.ToInt32(ResultSet["teacherid"]);
 
-                Teacher NewTeacher = new Teacher();
-                NewTeacher.TeacherId = TeacherId;
-                NewTeacher.TeacherFname = TeacherFname;
-                NewTeacher.TeacherLname = TeacherLname;
-                NewTeacher.EmployeeNumber = EmployeeNumber;
-                NewTeacher.HireDate = HireDate;
-                NewTeacher.Salary = Salary;
-                
+                Class NewClass = new Class();
+                NewClass.ClassId = Classid;
+                NewClass.Classname = Classname;
+                NewClass.Classcode = Classcode;
+                NewClass.Startdate = StartDate;
+                NewClass.Finishdate = FinishDate;
+                NewClass.Teacherid = Teacherid;
+
                 //Adding Teacher Name to the List
-                Teachers.Add(NewTeacher);
+                Class.Add(NewClass);
             }
-        
+
 
             //Ending connection between the MySQL Database and the WebServer
             Conn.Close();
 
             //Returning the final list of teacher names
-            return Teachers;
+            return Class;
         }
         [HttpGet]
-        public Teacher FindTeacher(int id)
+        public Class FindClass(int id)
         {
-            Teacher NewTeacher = new Teacher();
+            Class NewClass = new Class();
 
             //Creating connection with database
             MySqlConnection Conn = School.AccessDatabase();
@@ -92,7 +92,7 @@ namespace Assignment3_n01455211.Controllers
             MySqlCommand cmd = Conn.CreateCommand();
 
             //SQL QUERY to access columns from teacher table
-            cmd.CommandText = "Select teachers.*, classes.classcode, classes.classname, classes.classid from Teachers LEFT JOIN classes ON teachers.teacherid=classes.teacherid where teachers.Teacherid = " + id;
+            cmd.CommandText = "Select classes.*, teachers.teacherfname, teachers.teacherlname from classes LEFT JOIN teachers ON classes.teacherid=teachers.teacherid WHERE classes.classid = " + id;
 
             //Incorporating SQL Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
@@ -100,30 +100,26 @@ namespace Assignment3_n01455211.Controllers
             while (ResultSet.Read())
             {
                 //Get column information by the column name from teacher table
-                int TeacherId = (int)ResultSet["teacherid"];
                 int Classid = (int)ResultSet["classid"];
-                string TeacherFname = ResultSet["teacherfname"].ToString();
-                string TeacherLname = ResultSet["teacherlname"].ToString();
-                string EmployeeNumber = ResultSet["employeenumber"].ToString();
-                string HireDate = ResultSet.GetDateTime("hiredate").ToString("yyyy-MM-dd");
-                string Salary = ResultSet["salary"].ToString();                
+                int Teacherid = Convert.ToInt32(ResultSet["teacherid"]);
                 string Classname = ResultSet["classname"].ToString();
                 string Classcode = ResultSet["classcode"].ToString();
-                
+                string StartDate = ResultSet.GetDateTime("startdate").ToString("yyyy-MM-dd");
+                string FinishDate = ResultSet.GetDateTime("finishdate").ToString("yyyy-MM-dd");
+                string Teachername = ResultSet["teacherfname"].ToString() + " " + ResultSet["teacherlname"].ToString();
 
-                NewTeacher.TeacherId = TeacherId;
-                NewTeacher.TeacherFname = TeacherFname;
-                NewTeacher.TeacherLname = TeacherLname;
-                NewTeacher.EmployeeNumber = EmployeeNumber;
-                NewTeacher.HireDate = HireDate;
-                NewTeacher.Salary = Salary;
-                NewTeacher.Classname = Classname;
-                NewTeacher.Classcode = Classcode;
-                NewTeacher.Classid = Classid;
+                NewClass.ClassId = Classid;
+                NewClass.Classname = Classname;
+                NewClass.Classcode = Classcode;
+                NewClass.Startdate = StartDate;
+                NewClass.Finishdate = FinishDate;
+                NewClass.Teachername = Teachername;
+                NewClass.Teacherid = Teacherid;
             }
-
-            return NewTeacher;
+                return NewClass;
+            
         }
 
     }
+
 }

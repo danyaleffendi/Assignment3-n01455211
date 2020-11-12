@@ -13,6 +13,9 @@ namespace Assignment3_n01455211.Models
         public string TeacherLname;
         public string EmployeeNumber;
         public string HireDate;
-        public string Salary;        
+        public string Salary;
+        public string Classname;
+        public string Classcode;
+        public int Classid;
     }
 }
