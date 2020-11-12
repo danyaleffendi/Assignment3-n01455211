@@ -3,15 +3,17 @@
     padding-bottom: 20px;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-      
-}
+/* Customized Footer */
 .footer {
-    margin-top: 50px;
-    padding-top: 30px;
+    background-color: darkgreen;
+    padding-top: 10px;
+    color: white;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left:0;
 }
 /* Set width on the form input elements since they're 100% wide by default */
 input,
@@ -20,7 +22,57 @@ textarea {
     max-width: 280px;
 }
 
-#id {
+/* profile parameters */
+.title {
     text-decoration: underline;
-    color: blue;
+    font-weight: bold;
+    color: darkslategrey;
+}
+
+/* Customized navbar */
+.navbar-fixed-top {
+    background-color: darkgreen;
+    left: 0;
+}
+
+.container {
+    color: white;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#containerlist {
+    margin-left: 20px;
+    margin-top: 40px;
+}
+
+#containershow {
+    margin-left: 20px;
+    margin-top: 40px;
+}
+
+.container {
+    margin-left: 10px;
+}
+
+/* Back Button */
+.back {
+    padding: 7px;
+    background-color: black;
+    color: white; 
+}
+
+#backbutton {
+    margin-top: 50px;
+    margin-left: 20px;
+}
+
+#backbutton a:hover {
+        color: white;
+        text-decoration: none;
+        background-color: green;
 }

@@ -1,14 +1,15 @@
 ﻿@model Assignment3_n01455211.Models.Teacher
 
 @{
-    ViewBag.Title = "Show";
+    ViewBag.Title = "Teacher Profile";
 }
-
+ 
 <div id="containershow">
     <h2>@Model.TeacherFname @Model.TeacherLname</h2>
-    <p><span id="title"></span>Empoyee Number:</span> @Model.EmployeeNumber</p>
-    <p><b><u>Salary:</u></b> @Model.Salary</p>
-    <p><b><u>Hiring Date:</u></b> @Model.HireDate</p>
-    
-
+    <p><span class="title">Empoyee Number:</span> @Model.EmployeeNumber</p>
+    <p><span class="title">Salary:</span> @Model.Salary</p>
+    <p><span class="title">Hiring Date:</span> @Model.HireDate</p>   
+</div>
+<div id="backbutton">
+    <a class="back" href="/Teacher/List">Back</a>
 </div>
