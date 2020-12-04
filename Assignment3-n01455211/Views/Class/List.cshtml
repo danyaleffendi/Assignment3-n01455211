@@ -6,12 +6,21 @@
 
 
 <div id="containerlist">
+    <nav>
+        <a class="addnew" href="/Class/New">Add New Class</a>
+    </nav>
     <h2>Courses List</h2>
     <p>Following courses are included in the Web Development Program </p>
-    @foreach (var Class in Model)
-    {
-        <div class="listitem row">
-            <div class="col-md-12"><a href="/Class/Show/@Class.ClassId">@Class.Classcode - @Class.Classname</a></div>
-        </div>
-    }
-</div>
+    <div class="search">
+        <form action="/Class/List" method="GET">
+            <input type="text" name="SearchKey" autocomplete="off" />
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+        @foreach (var Class in Model)
+        {
+            <div class="listitem row">
+                <div class="col-md-12"><a href="/Class/Show/@Class.ClassId">@Class.Classcode - @Class.Classname</a></div>
+            </div>
+        }
+    </div>

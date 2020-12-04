@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Assignment3_n01455211.Models;
 using MySql.Data.MySqlClient;
+using System.Diagnostics;
 
 namespace Assignment3_n01455211.Controllers
 {
@@ -26,7 +27,8 @@ namespace Assignment3_n01455211.Controllers
         /// A list of Class
         /// </returns>
         [HttpGet]
-        public IEnumerable<Class> ClassInfo()
+        [Route("api/ClassData/ListClass/{SearchKey?}")]
+        public IEnumerable<Class> ClassInfo(string SearchKey = null)
         {
             //Creating connection with database
             MySqlConnection Conn = School.AccessDatabase();
@@ -38,7 +40,10 @@ namespace Assignment3_n01455211.Controllers
             MySqlCommand cmd = Conn.CreateCommand();
 
             //SQL QUERY to access columns from classes table
-            cmd.CommandText = "Select * from classes";
+            cmd.CommandText = "Select * from Classes where lower(classname) like lower(@key) or lower(classcode) like lower(@key)";
+
+            cmd.Parameters.AddWithValue("@key", "%" + SearchKey + "%");
+            cmd.Prepare();
 
 
             //Incorporating SQL Query into a variable
@@ -54,8 +59,12 @@ namespace Assignment3_n01455211.Controllers
                 int Classid = (int)ResultSet["classid"];
                 string Classname = ResultSet["classname"].ToString();
                 string Classcode = ResultSet["classcode"].ToString();
-                string StartDate = ResultSet.GetDateTime("startdate").ToString("yyyy-MM-dd");
-                string FinishDate = ResultSet.GetDateTime("finishdate").ToString("yyyy-MM-dd");
+                //  string StartDate = ResultSet.GetDateTime("startdate").ToString("yyyy-MM-dd");
+                //  string FinishDate = ResultSet.GetDateTime("finishdate").ToString("yyyy-MM-dd");
+                DateTime StartDate;
+                DateTime.TryParse(ResultSet["StartDate"].ToString(), out StartDate);
+                DateTime FinishDate;
+                DateTime.TryParse(ResultSet["FinishDate"].ToString(), out FinishDate);
                 int Teacherid = Convert.ToInt32(ResultSet["teacherid"]);
 
                 Class NewClass = new Class();
@@ -101,11 +110,13 @@ namespace Assignment3_n01455211.Controllers
             {
                 //Get column information by the column name from class table
                 int Classid = (int)ResultSet["classid"];
-                int Teacherid = Convert.ToInt32(ResultSet["teacherid"]);
+               // int Teacherid = Convert.ToInt32(ResultSet["teacherid"]);
                 string Classname = ResultSet["classname"].ToString();
                 string Classcode = ResultSet["classcode"].ToString();
-                string StartDate = ResultSet.GetDateTime("startdate").ToString("yyyy-MM-dd");
-                string FinishDate = ResultSet.GetDateTime("finishdate").ToString("yyyy-MM-dd");
+                DateTime StartDate;
+                DateTime.TryParse(ResultSet["StartDate"].ToString(), out StartDate);
+                DateTime FinishDate;
+                DateTime.TryParse(ResultSet["FinishDate"].ToString(), out FinishDate);
                 string Teachername = ResultSet["teacherfname"].ToString() + " " + ResultSet["teacherlname"].ToString();
 
                 NewClass.ClassId = Classid;
@@ -114,12 +125,82 @@ namespace Assignment3_n01455211.Controllers
                 NewClass.Startdate = StartDate;
                 NewClass.Finishdate = FinishDate;
                 NewClass.Teachername = Teachername;
-                NewClass.Teacherid = Teacherid;
+               // NewClass.Teacherid = Teacherid;
             }
-                return NewClass;
-            
+            Conn.Close();
+
+            return NewClass;
+        }
+
+            /// <summary>
+            /// Removes an Author from the database
+            /// </summary>
+            /// <param name="id">The ID of the author to remove</param>
+            /// <example>POST : /api/AuthorData/DeleteAuthor/3</example>
+            /// <returns>Does not return anything.</returns>
+            [HttpPost]
+            public void DeleteClass(int id)
+            {
+                //Create an instance of a connection
+                MySqlConnection Conn = School.AccessDatabase();
+
+                //Open the connection between the web server and database
+                Conn.Open();
+
+                //Establish a new command (query) for our database
+                MySqlCommand cmd = Conn.CreateCommand();
+
+                //SQL QUERY
+                cmd.CommandText = "Delete from classes where classid=@id";
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Prepare();
+
+                cmd.ExecuteNonQuery();
+
+                Conn.Close();
+            }
+
+        /// <summary>
+        /// Adds an Teacher to the MySQL Database.
+        /// </summary>
+        /// <param name="NewTeacher">An object with fields that map to the columns of the author's table. Non-Deterministic.</param>
+        /// <example>
+        /// POST api/TeacherData/AddTeacher 
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        ///	"TeacherFname":"Christine",
+        ///	"TeacherLname":"Bittle",
+        ///	"EmployeeNumber":"Likes Coding!",
+        ///	"Salary":"christine@test.ca"
+        /// }
+        /// </example>
+        [HttpPost]
+        public void AddClass([FromBody] Class NewClass)
+        {
+            //Create an instance of a connection
+            MySqlConnection Conn = School.AccessDatabase();
+
+            Debug.WriteLine(NewClass.Classname);
+
+            //Open the connection between the web server and database
+            Conn.Open();
+
+            //Establish a new command (query) for our database
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            //SQL QUERY
+            cmd.CommandText = "insert into classes (classcode, classname, startdate, finishdate, teacherid) values (@Classcode,@Classname,@StartDate, @FinishDate, @teacherid)";
+            cmd.Parameters.AddWithValue("@Classcode", NewClass.Classcode);
+            cmd.Parameters.AddWithValue("@Classname", NewClass.Classname);
+            cmd.Parameters.AddWithValue("@Startdate", NewClass.Startdate);
+            cmd.Parameters.AddWithValue("@Finishdate", NewClass.Finishdate);
+            cmd.Parameters.AddWithValue("@Teacherid", NewClass.Teacherid);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+
+            Conn.Close();
+
         }
 
     }
-
 }

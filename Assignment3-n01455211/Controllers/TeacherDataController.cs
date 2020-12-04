@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Assignment3_n01455211.Models;
 using MySql.Data.MySqlClient;
+using System.Diagnostics;
+
 
 namespace Assignment3_n01455211.Controllers
 {
@@ -27,7 +29,8 @@ namespace Assignment3_n01455211.Controllers
         /// A list of teachers (first names and last names)
         /// </returns>
         [HttpGet]
-        public IEnumerable<Teacher> TeacherInfo()
+        [Route("api/AuthorData/ListAuthors/{SearchKey?}")]
+        public IEnumerable<Teacher> TeacherInfo(string SearchKey = null)
         {
             //Creating connection with database
             MySqlConnection Conn = School.AccessDatabase();
@@ -39,8 +42,10 @@ namespace Assignment3_n01455211.Controllers
             MySqlCommand cmd = Conn.CreateCommand();
 
             //SQL QUERY to access columns from teacher table
-            cmd.CommandText = "Select * from teachers";
-            
+            cmd.CommandText = "Select * from Teachers where lower(teacherfname) like lower(@key) or lower(teacherlname) like lower(@key) or lower(concat(teacherfname, ' ', teacherlname)) like lower(@key)";
+
+            cmd.Parameters.AddWithValue("@key", "%" + SearchKey + "%");
+            cmd.Prepare();
 
             //Incorporating SQL Query into a variable
             MySqlDataReader ResultSet = cmd.ExecuteReader();
@@ -56,7 +61,8 @@ namespace Assignment3_n01455211.Controllers
                 string TeacherFname = ResultSet["teacherfname"].ToString();
                 string TeacherLname = ResultSet["teacherlname"].ToString();
                 string EmployeeNumber = ResultSet["employeenumber"].ToString();
-                string HireDate = ResultSet.GetDateTime("hiredate").ToString("yyyy-MM-dd");
+                DateTime HireDate;
+                DateTime.TryParse(ResultSet["HireDate"].ToString(), out HireDate);
                 string Salary = ResultSet["salary"].ToString();                
 
                 Teacher NewTeacher = new Teacher();
@@ -102,11 +108,12 @@ namespace Assignment3_n01455211.Controllers
             {
                 //Get column information by the column name from teacher table
                 int TeacherId = (int)ResultSet["teacherid"];
-                int Classid = (int)ResultSet["classid"];
+               // int Classid = (int)ResultSet["classid"];
                 string TeacherFname = ResultSet["teacherfname"].ToString();
                 string TeacherLname = ResultSet["teacherlname"].ToString();
                 string EmployeeNumber = ResultSet["employeenumber"].ToString();
-                string HireDate = ResultSet.GetDateTime("hiredate").ToString("yyyy-MM-dd");
+                DateTime HireDate;
+                DateTime.TryParse(ResultSet["HireDate"].ToString(), out HireDate);
                 string Salary = ResultSet["salary"].ToString();                
                 string Classname = ResultSet["classname"].ToString();
                 string Classcode = ResultSet["classcode"].ToString();
@@ -120,10 +127,79 @@ namespace Assignment3_n01455211.Controllers
                 NewTeacher.Salary = Salary;
                 NewTeacher.Classname = Classname;
                 NewTeacher.Classcode = Classcode;
-                NewTeacher.Classid = Classid;
+               // NewTeacher.Classid = Classid;
             }
+            Conn.Close();
 
             return NewTeacher;
+        }
+
+        /// <summary>
+        /// 
+        /// Removes a Teacher from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="id">The ID of the teacher to remove</param>
+        /// <example>POST : /api/TeacherData/DeleteTeacher/3</example>
+        /// <returns>Does not return anything.</returns>
+        [HttpPost]
+        public void DeleteTeacher(int id)
+        {
+            //Create an instance of a connection
+            MySqlConnection Conn = School.AccessDatabase();
+            //Open the connection between the web server and database
+            Conn.Open();
+            //Establish a new command (query) for our database
+            MySqlCommand cmd = Conn.CreateCommand();
+            //SQL QUERY
+            cmd.CommandText = "Delete from teachers WHERE teacherid=@id";
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+            Conn.Close();
+        }
+        /// <summary>
+        /// Adds an Teacher to the MySQL Database.
+        /// </summary>
+        /// <param name="NewTeacher">An object with fields that map to the columns of the author's table. Non-Deterministic.</param>
+        /// <example>
+        /// POST api/TeacherData/AddTeacher 
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        ///	"TeacherFname":"Christine",
+        ///	"TeacherLname":"Bittle",
+        ///	"EmployeeNumber":"Likes Coding!",
+        ///	"Salary":"christine@test.ca"
+        /// }
+        /// </example>
+        [HttpPost] 
+        public void AddTeacher([FromBody] Teacher NewTeacher)
+        {
+            //Create an instance of a connection
+            MySqlConnection Conn = School.AccessDatabase();
+
+            Debug.WriteLine(NewTeacher.TeacherFname);
+
+            //Open the connection between the web server and database
+            Conn.Open();
+
+            //Establish a new command (query) for our database
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            //SQL QUERY
+            cmd.CommandText = "insert into teachers (teacherfname, teacherlname, employeenumber, hiredate, salary) values (@TeacherFname,@TeacherLname,@EmployeeNumber, CURRENT_DATE(), @Salary)";
+            cmd.Parameters.AddWithValue("@TeacherFname", NewTeacher.TeacherFname);
+            cmd.Parameters.AddWithValue("@TeacherLname", NewTeacher.TeacherLname);
+            cmd.Parameters.AddWithValue("@EmployeeNumber", NewTeacher.EmployeeNumber);
+            cmd.Parameters.AddWithValue("@Salary", NewTeacher.Salary);
+            //cmd.Parameters.AddWithValue("@Classcode", NewTeacher.Classcode);
+            //cmd.Parameters.AddWithValue("@Classname", NewTeacher.Classname);
+            cmd.Prepare();
+            cmd.ExecuteNonQuery();
+
+            Conn.Close();
+
+
         }
 
     }

@@ -7,11 +7,15 @@
 <div id="containershow">
     <h2>@Model.Classname</h2>
     <div><span class="title">Course Code:</span> @Model.Classcode</div>
-    <div><span class="title">Course Instructor:</span> <a href="/teacher/Show/@Model.Teacherid"> @Model.Teachername</a></div>
-    <div><span class="title">Start Date:</span> @Model.Startdate</div>
-    <div><span class="title">End Date:</span> @Model.Finishdate</div>
+    <div><span class="title">Course Instructor:</span> @Model.Teachername</div>
+    <div><span class="title">Start Date:</span> @Model.Startdate.ToString("dd-MMM-yyyy")</div>
+    <div><span class="title">End Date:</span> @Model.Finishdate.ToString("dd-MMM-yyyy")</div>
 
 </div>
 <div id="backbutton">
     <a class="back" href="/Class/List">Back</a>
+    <a class="delete" href="/Class/DeleteConfirm/@Model.ClassId">Delete</a>
+</div>
+<div id="deletebutton">
+    
 </div>

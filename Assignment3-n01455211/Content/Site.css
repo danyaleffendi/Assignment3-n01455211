@@ -66,13 +66,58 @@ textarea {
     color: white; 
 }
 
+.back:hover {
+    text-decoration: none;
+}
+
 #backbutton {
     margin-top: 50px;
     margin-left: 20px;
 }
 
-#backbutton a:hover {
-        color: white;
-        text-decoration: none;
-        background-color: green;
+
+/* Delete Button */
+.delete {
+    padding: 7px;
+    background-color: red;
+    color: black;
+    margin-left: 10px;
+}
+
+.delete:hover {
+    text-decoration: none;
+}
+.confirmdelete {
+    padding: 7px;
+    background-color: red;
+    color: black;
+}
+
+.addnew {
+    padding: 7px;
+    background-color: green;
+    color: white;
+}
+
+.addnew:hover {
+     text-decoration: none;
+}
+
+.search {
+    margin-bottom: 10px;
+}
+
+.cancel {
+    padding: 7px;
+    background-color: black;
+    color: white;
+    
+}
+
+.cancel:hover {
+    text-decoration: none;
+}
+
+.cancelbutton {
+    margin-top: 15px;
 }

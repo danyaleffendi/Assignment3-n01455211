@@ -8,9 +8,12 @@
     <h2>@Model.TeacherFname @Model.TeacherLname</h2>
     <div><span class="title">Empoyee Number:</span> @Model.EmployeeNumber</div>
     <div><span class="title">Salary:</span> @Model.Salary</div>
-    <div><span class="title">Hiring Date:</span> @Model.HireDate</div>
-    <div><span class="title">Course Taught:</span> <a href="/Class/Show/@Model.Classid">@Model.Classname</a></div>
+    <div><span class="title">Hiring Date:</span> @Model.HireDate.ToString("dd-MMM-yyyy")</div>
+    <div><span class="title">Course Taught:</span> @Model.Classname</div>
 </div>
 <div id="backbutton">
     <a class="back" href="/Teacher/List">Back</a>
+</div>
+<div id="deletebutton">
+        <a class="delete" href="/Teacher/DeleteConfirm/@Model.TeacherId">Delete</a>
 </div>

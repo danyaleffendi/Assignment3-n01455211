@@ -11,11 +11,14 @@ namespace Assignment3_n01455211.Models
         public int ClassId;        
         public string Classname;
         public string Classcode;
-        public string Startdate;
-        public string Finishdate;        
+        public DateTime Startdate;
+        public DateTime Finishdate;        
         public int Teacherid;
 
         //Created to show teachername under the course show view
         public string Teachername;
+
+        //parameter-less constructor function
+        public Class() { }
     }
 }

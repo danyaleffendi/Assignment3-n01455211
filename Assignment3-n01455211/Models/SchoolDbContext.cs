@@ -30,7 +30,8 @@ namespace Assignment3_n01455211.Models
                     + "; user = " + User
                     + "; database = " + Database
                     + "; port = " + Port
-                    + "; password = " + Password;
+                    + "; password = " + Password
+                    + "; convert zero DateTime = True";
             }
         }
         //This is the method we actually use to get the database!

@@ -6,8 +6,17 @@
 
 
 <div id="containerlist">
+    <nav>
+        <a class="addnew" href="/Teacher/New">Add New Teacher</a>
+    </nav>
     <h2>List of Teachers</h2>
     <p>Following instructors are currently teaching the Web Development Program Courses</p>
+    <div class="search">
+        <form action="/Teacher/List" method="GET">
+            <input type="text" name="SearchKey" autocomplete="off" />
+            <input type="submit" value="Search" />
+        </form>
+    </div>
     @foreach (var Teacher in Model)
     {
         <div class="listitem row">

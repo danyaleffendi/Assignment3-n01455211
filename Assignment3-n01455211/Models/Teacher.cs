@@ -12,7 +12,7 @@ namespace Assignment3_n01455211.Models
         public string TeacherFname;
         public string TeacherLname;
         public string EmployeeNumber;
-        public string HireDate;
+        public DateTime HireDate;
         public string Salary;
 
         //Created to show course name under the teacher show view
@@ -22,5 +22,7 @@ namespace Assignment3_n01455211.Models
         //Created to link course name to respective class show view
         public int Classid;
 
+        //parameter-less constructor function
+        public Teacher() { }
     }
 }
