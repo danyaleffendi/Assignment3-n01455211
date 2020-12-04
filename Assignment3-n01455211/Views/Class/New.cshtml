@@ -6,18 +6,18 @@
 
 <div id="containershow">
     <nav>
-        <a class="back" href="/Class/List">Back To Class</a>
+        <a class="back" href="/Class/List">Back To Course</a>
     </nav>
-    <h2>New Teacher</h2>
-    <form method="POST" action="/Class/Create">
+    <h2>New Course</h2>
+    <form method="POST" action="/Class/Create" name="addnewcourse">
         <div class="inputrow">
-            <label for="Classcode">Class Code:</label>
+            <label for="Classcode">Course Code:</label>
             <div>
                 <input type="text" id="Classcode" name="Classcode" />
             </div>
         </div>
         <div class="inputrow">
-            <label for="Classname">Class Name:</label>
+            <label for="Classname">Course Name:</label>
             <div>
                 <input type="text" id="Classname" name="Classname" />
             </div>
@@ -33,10 +33,8 @@
             <input type="date" id="Startdate" name="Startdate" />
         </div>
         <div class="inputrow">
-            <label for="Finishdate">Finish Date:</label>
-            <div>
-                <input type="date" id="Finishdate" name="Finishdate" />
-            </div>
+            <label for="Finishdate">Finish Date:</label>            
+            <input type="date" id="Finishdate" name="Finishdate" />            
         </div>
            <div class="inputrow" >
                 <input class="addnew" type="submit" value="Add Class" />

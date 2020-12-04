@@ -14,7 +14,7 @@ namespace Assignment3_n01455211.Controllers
     public class TeacherDataController : ApiController
     {
         // This project is done with the help of instructor Christine Bittle's Blog Project.
-        // Resources used are Github blog project example and lecture videos. Accessed on 11 and 12 Nov. 2020.
+        // Resources used are Github blog project example and lecture videos. Accessed on 11, 12 Nov for Assignment3 and 2,3 Dec.2020 for Assignment 4.
         // Some help also taken from fellow students especially proper syntax for GetDateTime
 
         // The database context class which allows us to access School Database.
@@ -84,6 +84,14 @@ namespace Assignment3_n01455211.Controllers
             //Returning the final list of teacher names
             return Teachers;
         }
+
+        /// <summary>
+        /// Finds a teacher from the MySQL Database through an id. Non-Deterministic.
+        /// </summary>
+        /// <param name="id">The Teacher ID</param>
+        /// <returns>Teacher object containing information about the teacher with a matching ID. Empty Teacher Object if the ID does not match any teachers in the system.</returns>
+        /// <example>api/TeacherData/FindTeacher/3 -> {Author Object}</example>
+        /// <example>api/TeacherData/FindTeacher/7 -> {Author Object}</example>
         [HttpGet]
         public Teacher FindTeacher(int id)
         {
@@ -108,7 +116,7 @@ namespace Assignment3_n01455211.Controllers
             {
                 //Get column information by the column name from teacher table
                 int TeacherId = (int)ResultSet["teacherid"];
-               // int Classid = (int)ResultSet["classid"];
+               // int Classid = (int)ResultSet["classid"]; removed due to disturbance in adding and deleting new teachers
                 string TeacherFname = ResultSet["teacherfname"].ToString();
                 string TeacherLname = ResultSet["teacherlname"].ToString();
                 string EmployeeNumber = ResultSet["employeenumber"].ToString();
@@ -134,13 +142,12 @@ namespace Assignment3_n01455211.Controllers
             return NewTeacher;
         }
 
-        /// <summary>
-        /// 
+        /// <summary> 
         /// Removes a Teacher from the database
         /// </summary>
         /// <param name="id"></param>
         /// <param name="id">The ID of the teacher to remove</param>
-        /// <example>POST : /api/TeacherData/DeleteTeacher/3</example>
+        /// <example>POST : /api/TeacherData/DeleteTeacher/12</example>
         /// <returns>Does not return anything.</returns>
         [HttpPost]
         public void DeleteTeacher(int id)
@@ -161,15 +168,15 @@ namespace Assignment3_n01455211.Controllers
         /// <summary>
         /// Adds an Teacher to the MySQL Database.
         /// </summary>
-        /// <param name="NewTeacher">An object with fields that map to the columns of the author's table. Non-Deterministic.</param>
+        /// <param name="NewTeacher">An object with fields that map to the columns of the teacher's table. Non-Deterministic.</param>
         /// <example>
         /// POST api/TeacherData/AddTeacher 
         /// FORM DATA / POST DATA / REQUEST BODY 
         /// {
-        ///	"TeacherFname":"Christine",
-        ///	"TeacherLname":"Bittle",
-        ///	"EmployeeNumber":"Likes Coding!",
-        ///	"Salary":"christine@test.ca"
+        ///	"TeacherFname":"Chris",
+        ///	"TeacherLname":"John",
+        ///	"EmployeeNumber":"T123",
+        ///	"Salary":"35"
         /// }
         /// </example>
         [HttpPost] 
@@ -192,8 +199,6 @@ namespace Assignment3_n01455211.Controllers
             cmd.Parameters.AddWithValue("@TeacherLname", NewTeacher.TeacherLname);
             cmd.Parameters.AddWithValue("@EmployeeNumber", NewTeacher.EmployeeNumber);
             cmd.Parameters.AddWithValue("@Salary", NewTeacher.Salary);
-            //cmd.Parameters.AddWithValue("@Classcode", NewTeacher.Classcode);
-            //cmd.Parameters.AddWithValue("@Classname", NewTeacher.Classname);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
 

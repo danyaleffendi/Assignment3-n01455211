@@ -59,8 +59,6 @@ namespace Assignment3_n01455211.Controllers
                 int Classid = (int)ResultSet["classid"];
                 string Classname = ResultSet["classname"].ToString();
                 string Classcode = ResultSet["classcode"].ToString();
-                //  string StartDate = ResultSet.GetDateTime("startdate").ToString("yyyy-MM-dd");
-                //  string FinishDate = ResultSet.GetDateTime("finishdate").ToString("yyyy-MM-dd");
                 DateTime StartDate;
                 DateTime.TryParse(ResultSet["StartDate"].ToString(), out StartDate);
                 DateTime FinishDate;
@@ -86,6 +84,14 @@ namespace Assignment3_n01455211.Controllers
             //Returning the final list of class names
             return Class;
         }
+
+        /// <summary>
+        /// Finds a course from the MySQL Database through an id. Non-Deterministic.
+        /// </summary>
+        /// <param name="id">The Course ID</param>
+        /// <returns>Teacher object containing information about the course with a matching ID. Empty Course Object if the ID does not match any course in the system.</returns>
+        /// <example>api/ClassData/FindClass/1 -> {Author Object}</example>
+        /// <example>api/ClassData/FindClass/9 -> {Author Object}</example>
         [HttpGet]
         public Class FindClass(int id)
         {
@@ -110,7 +116,6 @@ namespace Assignment3_n01455211.Controllers
             {
                 //Get column information by the column name from class table
                 int Classid = (int)ResultSet["classid"];
-               // int Teacherid = Convert.ToInt32(ResultSet["teacherid"]);
                 string Classname = ResultSet["classname"].ToString();
                 string Classcode = ResultSet["classcode"].ToString();
                 DateTime StartDate;
@@ -125,7 +130,6 @@ namespace Assignment3_n01455211.Controllers
                 NewClass.Startdate = StartDate;
                 NewClass.Finishdate = FinishDate;
                 NewClass.Teachername = Teachername;
-               // NewClass.Teacherid = Teacherid;
             }
             Conn.Close();
 
@@ -133,10 +137,10 @@ namespace Assignment3_n01455211.Controllers
         }
 
             /// <summary>
-            /// Removes an Author from the database
+            /// Removes a COurse from the database
             /// </summary>
-            /// <param name="id">The ID of the author to remove</param>
-            /// <example>POST : /api/AuthorData/DeleteAuthor/3</example>
+            /// <param name="id">The ID of the course to remove</param>
+            /// <example>POST : /api/ClassData/DeleteClass/3</example>
             /// <returns>Does not return anything.</returns>
             [HttpPost]
             public void DeleteClass(int id)
@@ -161,18 +165,17 @@ namespace Assignment3_n01455211.Controllers
             }
 
         /// <summary>
-        /// Adds an Teacher to the MySQL Database.
+        /// Adds a Course to the MySQL Database.
         /// </summary>
-        /// <param name="NewTeacher">An object with fields that map to the columns of the author's table. Non-Deterministic.</param>
+        /// <param name="NewClass">An object with fields that map to the columns of the classes's table. Non-Deterministic.</param>
         /// <example>
-        /// POST api/TeacherData/AddTeacher 
+        /// POST api/ClassData/AddClass
         /// FORM DATA / POST DATA / REQUEST BODY 
-        /// {
-        ///	"TeacherFname":"Christine",
-        ///	"TeacherLname":"Bittle",
-        ///	"EmployeeNumber":"Likes Coding!",
-        ///	"Salary":"christine@test.ca"
-        /// }
+        /// "Classcode":"HTTP5106",
+        ///	"Classname":"Time Manegement",
+        ///	"Teacherid": "10",
+        ///	"Startdate":"01-12-2020",
+        ///	"Finishdate":"31-12-2020"
         /// </example>
         [HttpPost]
         public void AddClass([FromBody] Class NewClass)
