@@ -7,6 +7,7 @@ using System.Web.Http;
 using Assignment3_n01455211.Models;
 using MySql.Data.MySqlClient;
 using System.Diagnostics;
+using System.Web.Http.Cors;
 
 
 namespace Assignment3_n01455211.Controllers
@@ -29,7 +30,8 @@ namespace Assignment3_n01455211.Controllers
         /// A list of teachers (first names and last names)
         /// </returns>
         [HttpGet]
-        [Route("api/AuthorData/ListAuthors/{SearchKey?}")]
+        [Route("api/AuthorData/ListTeacher/{SearchKey?}")]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
         public IEnumerable<Teacher> TeacherInfo(string SearchKey = null)
         {
             //Creating connection with database
@@ -93,6 +95,7 @@ namespace Assignment3_n01455211.Controllers
         /// <example>api/TeacherData/FindTeacher/3 -> {Author Object}</example>
         /// <example>api/TeacherData/FindTeacher/7 -> {Author Object}</example>
         [HttpGet]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
         public Teacher FindTeacher(int id)
         {
             Teacher NewTeacher = new Teacher();
@@ -150,6 +153,7 @@ namespace Assignment3_n01455211.Controllers
         /// <example>POST : /api/TeacherData/DeleteTeacher/12</example>
         /// <returns>Does not return anything.</returns>
         [HttpPost]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
         public void DeleteTeacher(int id)
         {
             //Create an instance of a connection
@@ -179,7 +183,8 @@ namespace Assignment3_n01455211.Controllers
         ///	"Salary":"35"
         /// }
         /// </example>
-        [HttpPost] 
+        [HttpPost]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
         public void AddTeacher([FromBody] Teacher NewTeacher)
         {
             //Create an instance of a connection
@@ -204,8 +209,52 @@ namespace Assignment3_n01455211.Controllers
 
             Conn.Close();
 
+        }
+
+        /// <summary>
+        /// Updates an Teacher on the MySQL Database. Non-Deterministic.
+        /// </summary>
+        /// <param name="TeacherInfo">An object with fields that map to the columns of the Teachers table.</param>
+        /// <example>
+        /// POST api/TeacherData/UpdateTeacher/8 
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        ///	"TeacherFname":"Daniel",
+        ///	"TeacherLname":"Stark",
+        ///	"EmployeeNumber":"T314!",
+        ///	"Salary":"44"
+        /// }
+        /// </example>
+        [HttpPost]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
+        public void UpdateTeacher(int id, [FromBody] Teacher TeacherInfo)
+        {
+            //Create an instance of a connection
+            MySqlConnection Conn = School.AccessDatabase();
+           
+
+            //Open the connection between the web server and database
+            Conn.Open();
+
+            //Establish a new command (query) for our database
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            //SQL QUERY
+            cmd.CommandText = "update teachers set teacherfname=@TeacherFname, teacherlname=@TeacherLname, employeenumber=@EmployeeNumber, salary=@Salary where teacherid=@TeacherId";
+            cmd.Parameters.AddWithValue("@TeacherFname", TeacherInfo.TeacherFname);
+            cmd.Parameters.AddWithValue("@TeacherLname", TeacherInfo.TeacherLname);
+            cmd.Parameters.AddWithValue("@EmployeeNumber", TeacherInfo.EmployeeNumber);
+            cmd.Parameters.AddWithValue("@Salary", TeacherInfo.Salary);
+            cmd.Parameters.AddWithValue("@TeacherId", id);
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+
+            Conn.Close();
+
 
         }
+
 
     }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿//For client side validation
 var newTeacher = {
 	TeacherFname: "",
 	TeacherLname: "",
@@ -36,35 +36,36 @@ window.onload = function () {
 
 		//CHECKING FOR AN EMPTY STRING OR null VALUE in first name.
 		if (AddTeacher.TeacherFname === "" || AddTeacher.TeacherFname === null) {
-			alert("Please Enter First Name.");
 			namefield = document.getElementById("TeacherFname");
-			namefield.style.background = "red";
+			errorfield = document.getElementById("fnameerror");
+			errorfield.innerHTML = "Please Enter First Name";
 			namefield.focus();
 			return false;
 		}
 		//CHECKING FOR AN EMPTY STRING OR null VALUE in last name.
 		if (AddTeacher.TeacherLname === "" || AddTeacher.TeacherLname === null) {
-			alert("Please Enter Last Name.");
 			namefield = document.getElementById("TeacherLname");
-			namefield.style.background = "red";
+			errorfield = document.getElementById("lnameerror");
+			errorfield.innerHTML = "Please Enter Last Name";
 			namefield.focus();
 			return false;
 		}
 
 		//Validating Emplyee Number format
-		if (!EmployeeNumber.test(AddTeacher.EmployeeNumber)) {
-			alert("Please Enter Teacher's Employee Number in Correct Format.")
+		if 	(AddTeacher.EmployeeNumber === "" || AddTeacher.EmployeeNumber === null){
 			idfield = document.getElementById("EmployeeNumber");
-			idfield.style.background = "red";
+			errorfield = document.getElementById("enerror");
+			errorfield.innerHTML = "Please Enter Teacher's Employee Number in Correct Format.";
+			errorfield.style.color = "red";
 			idfield.focus();
 			return false;
 		}
 
 		//CHECKING FOR AN EMPTY STRING OR null VALUE in salary.
 		if (AddTeacher.Salary === "" || AddTeacher.Salary === null) {
-			alert("Please Enter Per Hour Salary.")
 			namefield = document.getElementById("Salary");
-			namefield.style.background = "red";
+			errorfield = document.getElementById("salaryerror");
+			errorfield.innerHTML = "Please Enter Per Hour Salary.";
 			namefield.focus();
 			return false;
 		}

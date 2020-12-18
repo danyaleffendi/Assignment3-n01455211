@@ -1,0 +1,47 @@
+﻿@model Assignment3_n01455211.Models.Class
+@{
+    ViewBag.Title = "Ajax New";
+}
+
+
+<div id="containershow">
+    <nav>
+        <a class="back" href="/Class/List">Back To Course</a>
+    </nav>
+    <h2>New Course</h2>
+    @{
+        /* AJAX Request to add class */
+        /* No form submission needed */
+        /* button onclick will handle form submission */
+        /* Each item has an ID for validation && ajax submission */
+    }
+    <div class="inputrow">
+        <label for="Classcode">Course Code:</label>
+        <div>
+            <input type="text" id="Classcode" name="Classcode" />
+        </div>
+    </div>
+    <div class="inputrow">
+        <label for="Classname">Course Name:</label>
+        <div>
+            <input type="text" id="Classname" name="Classname" />
+        </div>
+    </div>
+    <div class="inputrow">
+        <label for="Teacherid">Teacher ID:</label>
+        <div>
+            <input type="number" id="Teacherid" name="Teacherid" />
+        </div>
+    </div>
+    <div class="inputrow">
+        <label for="Startdate">Start Date:</label>
+        <input type="date" id="Startdate" name="Startdate" />
+    </div>
+    <div class="inputrow">
+        <label for="Finishdate">Finish Date:</label>
+        <input type="date" id="Finishdate" name="Finishdate" />
+    </div>
+    @{
+        //AddClass() is a JS method defined in /Scripts/javascripts1.js
+    }
+</div>

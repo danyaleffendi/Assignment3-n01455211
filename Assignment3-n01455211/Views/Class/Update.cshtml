@@ -1,0 +1,43 @@
+﻿@model Assignment3_n01455211.Models.Class
+@{
+    ViewBag.Title = "Update";
+}
+
+
+<div id="containershow">
+    <nav>
+        <a class="back" href="/Class/List">Back To Course</a>
+    </nav>
+    <h2>Update Course</h2>
+    <form method="POST" action="/Class/Update/@Model.ClassId">
+        <div class="inputrow">
+            <label for="Classcode">Course Code:</label>
+            <div>
+                <input type="text" id="Classcode" name="Classcode" value="@Model.Classcode"/>
+            </div>
+        </div>
+        <div class="inputrow">
+            <label for="Classname">Course Name:</label>
+            <div>
+                <input type="text" id="Classname" name="Classname" value="@Model.Classname"/>
+            </div>
+        </div>
+        <div class="inputrow">
+            <label for="Teacherid">Teacher ID:</label>
+            <div>
+                <input type="number" id="Teacherid" name="Teacherid" value="@Model.Teacherid"/>
+            </div>
+        </div>
+        <div class="inputrow">
+            <label for="Startdate">Start Date:</label>
+            <input type="date" id="Startdate" name="Startdate" value="@Model.Startdate"/>
+        </div>
+        <div class="inputrow">
+            <label for="Finishdate">Finish Date:</label>
+            <input type="date" id="Finishdate" name="Finishdate" value="@Model.Finishdate"/>
+        </div>
+        <div class="inputrow">
+            <input class="addnew" type="submit" value="Update Course" />
+        </div>
+    </form>
+</div>

@@ -7,6 +7,7 @@ using System.Web.Http;
 using Assignment3_n01455211.Models;
 using MySql.Data.MySqlClient;
 using System.Diagnostics;
+using System.Web.Http.Cors;
 
 namespace Assignment3_n01455211.Controllers
 {
@@ -199,6 +200,51 @@ namespace Assignment3_n01455211.Controllers
             cmd.Parameters.AddWithValue("@Finishdate", NewClass.Finishdate);
             cmd.Parameters.AddWithValue("@Teacherid", NewClass.Teacherid);
             cmd.Prepare();
+            cmd.ExecuteNonQuery();
+
+            Conn.Close();
+
+        }
+
+        /// <summary>
+        /// Updates an Course on the MySQL Database. Non-Deterministic.
+        /// </summary>
+        /// <param name="ClassInfo">An object with fields that map to the columns of the classes table.</param>
+        /// <example>
+        /// POST api/ClassData/UpdateClass/13 
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        ///	"Classcode":"HTTP6101",
+        ///	"Classname":"Technical SEO",
+        ///	"Startdate":"1/1/2021",
+        ///	"Finishdate":"31/1/2012"
+        ///	"Teacherid":"12"
+        /// }
+        /// </example>
+        [HttpPost]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
+        public void Update(int id, [FromBody] Class ClassInfo)
+        {
+            //Create an instance of a connection
+            MySqlConnection Conn = School.AccessDatabase();
+
+
+            //Open the connection between the web server and database
+            Conn.Open();
+
+            //Establish a new command (query) for our database
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            //SQL QUERY
+            cmd.CommandText = "update classes set Classcode=@Classcode, Classname=@Classname, Startdate=@Startdate, Finishdate=@Finishdate, Teacherid=@Teacherid where Classid=@Classid";
+            cmd.Parameters.AddWithValue("@Classcode", ClassInfo.Classcode);
+            cmd.Parameters.AddWithValue("@Classname", ClassInfo.Classname);
+            cmd.Parameters.AddWithValue("@Startdate", ClassInfo.Startdate);
+            cmd.Parameters.AddWithValue("@Finishdate", ClassInfo.Finishdate);
+            cmd.Parameters.AddWithValue("@Teacherid", ClassInfo.Teacherid);
+            cmd.Parameters.AddWithValue("@Classid", id);
+            cmd.Prepare();
+
             cmd.ExecuteNonQuery();
 
             Conn.Close();
